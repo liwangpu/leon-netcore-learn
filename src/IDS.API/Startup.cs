@@ -1,30 +1,77 @@
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
+using Base.API;
+using IdentityServer4.Services;
+using IdentityServer4.Stores;
+using IdentityServer4.Validation;
+using IDS.API.Infrastructure.IdentityServer;
+using IDS.Domain.AggregateModels.IdentityServerAggregate;
+using IDS.Domain.AggregateModels.UserAggregate;
+using IDS.Infrastructure;
+using IDS.Infrastructure.Repositories;
+using MediatR;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
-using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
-using Microsoft.Extensions.Logging;
+using System.Reflection;
 
 namespace IDS.API
 {
     public class Startup
     {
+
+        #region properties
+        public IConfiguration Configuration { get; }
+        public string Database => Configuration["DatabaseSettings:Database"];
+        public string DBType => Configuration["DatabaseSettings:Type"];
+        public string DBServer => Configuration["DatabaseSettings:Server"];
+        public string DBPort => Configuration["DatabaseSettings:Port"];
+        public string DBUserId => Configuration["DatabaseSettings:UserId"];
+        public string DBPassword => Configuration["DatabaseSettings:Password"];
+        public string IdentityServerIssuerUri => Configuration["IdentityServer:IssuerUri"];
+        #endregion
+
         public Startup(IConfiguration configuration)
         {
             Configuration = configuration;
         }
 
-        public IConfiguration Configuration { get; }
 
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
             services.AddControllers();
+            services.AddMediatR(Assembly.GetExecutingAssembly());
+
+            services.AddDbContext<IDSAppContext>(options =>
+            {
+                var connectionString = DbConnectionStringBuilder.Build(DBType, DBServer, DBPort, Database, DBUserId, DBPassword);
+                options.UseNpgsql(connectionString, sqlContextOptionsBuilder =>
+                {
+                    sqlContextOptionsBuilder.MigrationsAssembly(typeof(Startup).GetTypeInfo().Assembly.GetName().Name);
+                });
+            });
+
+            services.AddScoped<IPersistedGrantStore, PersistedGrantStore>();
+            services.AddScoped<IIdentityRepository, IdentityRepository>();
+            services.AddScoped<IIdentityGrantRepository, IdentityGrantRepository>();
+            services.AddScoped<IResourceOwnerPasswordValidator, ResourceOwnerPasswordValidator>();
+            services.AddScoped<IProfileService, ProfileService>();
+
+            var builder = services.AddIdentityServer(options =>
+            {
+                options.IssuerUri = IdentityServerIssuerUri;
+            })
+                 .AddInMemoryIdentityResources(Resources.GetIdentityResources())
+                 .AddInMemoryApiResources(Resources.GetApiResources())
+                 .AddInMemoryClients(Clients.GetClients())
+                 .AddResourceOwnerValidator<ResourceOwnerPasswordValidator>()
+                 .AddPersistedGrantStore<PersistedGrantStore>()
+                 .AddProfileService<ProfileService>();
+
+            builder.AddDeveloperSigningCredential();
+
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
@@ -36,8 +83,7 @@ namespace IDS.API
             }
 
             app.UseRouting();
-
-            app.UseAuthorization();
+            app.UseIdentityServer();
 
             app.UseEndpoints(endpoints =>
             {

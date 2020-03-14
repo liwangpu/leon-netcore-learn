@@ -8,7 +8,7 @@ namespace Base.Domain.Common
         IUnitOfWork UnitOfWork { get; }
         Task AddAsync(T entity);
         Task UpdateAsync(T entity);
-        Task DeleteAsync(string id, string operatorId);
+        Task DeleteAsync(string id);
         Task<T> FindAsync(string id);
         IQueryable<T> Get(ISpecification<T> specification);
         IQueryable<T> Paging(IPagingSpecification<T> specification);

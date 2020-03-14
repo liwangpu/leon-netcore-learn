@@ -2,26 +2,18 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
-using MediatR;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 
-namespace IDS.API.Controllers
+namespace OSS.API.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
-    public class IdentityController : ControllerBase
+    public class FileController : ControllerBase
     {
-        private readonly IMediator mediator;
-
-        public IdentityController(IMediator mediator)
-        {
-            this.mediator = mediator;
-        }
-
         public IActionResult Get()
         {
-            return Ok("Hello");
+            return Ok("all files");
         }
     }
 }
