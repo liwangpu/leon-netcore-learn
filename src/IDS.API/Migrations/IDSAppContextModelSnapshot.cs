@@ -50,8 +50,10 @@ namespace IDS.API.Migrations
 
             modelBuilder.Entity("IDS.Domain.AggregateModels.UserAggregate.Identity", b =>
                 {
-                    b.Property<string>("Id")
-                        .HasColumnType("text");
+                    b.Property<long>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("bigint")
+                        .HasAnnotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn);
 
                     b.Property<string>("Email")
                         .HasColumnType("text");

@@ -5,6 +5,8 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <ProjectReference Include="..\Base.API\Base.API.csproj" />
+    <ProjectReference Include="..\Base.Domain\Base.Domain.csproj" />
     <ProjectReference Include="..\OSS.Domain\OSS.Domain.csproj" />
     <ProjectReference Include="..\OSS.Infrastructure\OSS.Infrastructure.csproj" />
   </ItemGroup>

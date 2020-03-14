@@ -5,6 +5,7 @@ namespace IDS.Domain.AggregateModels.IdentityServerAggregate
 {
     public class IdentityGrant : Entity
     {
+        public string Id { get; protected set; }
         /// <summary>
         /// Gets the type.
         /// </summary>

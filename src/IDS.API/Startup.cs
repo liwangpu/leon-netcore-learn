@@ -58,6 +58,7 @@ namespace IDS.API
             services.AddScoped<IIdentityGrantRepository, IdentityGrantRepository>();
             services.AddScoped<IResourceOwnerPasswordValidator, ResourceOwnerPasswordValidator>();
             services.AddScoped<IProfileService, ProfileService>();
+            services.AddPrifileContext();
 
             var builder = services.AddIdentityServer(options =>
             {

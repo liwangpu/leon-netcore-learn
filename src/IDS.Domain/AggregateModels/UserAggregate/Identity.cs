@@ -4,6 +4,7 @@ namespace IDS.Domain.AggregateModels.UserAggregate
 {
     public class Identity : Entity
     {
+        public long Id { get; protected set; }
         public string Username { get; protected set; }
         public string Password { get; protected set; }
         public string Name { get; protected set; }

@@ -5,15 +5,8 @@ namespace Base.Domain.Common
 {
     public abstract class Entity
     {
-        public string Id { get; protected set; }
         private List<INotification> _domainEvents;
         public IReadOnlyCollection<INotification> DomainEvents => _domainEvents?.AsReadOnly();
-
-
-        public bool IsTransient()
-        {
-            return !string.IsNullOrWhiteSpace(Id);
-        }
 
         public void AddDomainEvent(INotification eventItem)
         {

@@ -10,8 +10,8 @@ using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 namespace IDS.API.Migrations
 {
     [DbContext(typeof(IDSAppContext))]
-    [Migration("20200314074404_grant")]
-    partial class grant
+    [Migration("20200314093035_init")]
+    partial class init
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
@@ -42,6 +42,9 @@ namespace IDS.API.Migrations
                     b.Property<string>("SubjectId")
                         .HasColumnType("text");
 
+                    b.Property<string>("Type")
+                        .HasColumnType("text");
+
                     b.HasKey("Id");
 
                     b.ToTable("IdentityGrant");
@@ -49,8 +52,10 @@ namespace IDS.API.Migrations
 
             modelBuilder.Entity("IDS.Domain.AggregateModels.UserAggregate.Identity", b =>
                 {
-                    b.Property<string>("Id")
-                        .HasColumnType("text");
+                    b.Property<long>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("bigint")
+                        .HasAnnotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn);
 
                     b.Property<string>("Email")
                         .HasColumnType("text");

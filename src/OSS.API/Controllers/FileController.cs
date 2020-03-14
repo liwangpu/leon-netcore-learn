@@ -1,8 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
-using Microsoft.AspNetCore.Http;
+﻿using Base.Domain.Common;
 using Microsoft.AspNetCore.Mvc;
 
 namespace OSS.API.Controllers
@@ -11,6 +7,12 @@ namespace OSS.API.Controllers
     [ApiController]
     public class FileController : ControllerBase
     {
+        private readonly IProfileContext profileContext;
+
+        public FileController(IProfileContext profileContext)
+        {
+            this.profileContext = profileContext;
+        }
         public IActionResult Get()
         {
             return Ok("all files");
