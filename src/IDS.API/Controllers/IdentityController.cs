@@ -1,12 +1,9 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
+﻿using Base.API;
 using IDS.API.Application.Commands.Identities;
 using IDS.API.Application.Queries.Identities;
 using MediatR;
-using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using System.Threading.Tasks;
 
 namespace IDS.API.Controllers
 {
@@ -22,6 +19,7 @@ namespace IDS.API.Controllers
         }
 
         [HttpGet]
+        [ProducesResponseType(typeof(PagingQueryResult<IdentityPagingQueryDTO>), 200)]
         public async Task<IActionResult> Get([FromQuery] IdentityPagingQuery query)
         {
             var resule = await mediator.Send(query);
@@ -29,7 +27,7 @@ namespace IDS.API.Controllers
         }
 
         [HttpGet("{id}")]
-        //[ProducesResponseType(typeof(OrganizationIdentityQueryDTO), 200)]
+        [ProducesResponseType(typeof(IdentityQueryDTO), 200)]
         public async Task<IActionResult> Get(string id)
         {
             var dto = await mediator.Send(new IdentityQuery(id));
@@ -37,10 +35,19 @@ namespace IDS.API.Controllers
         }
 
         [HttpPost]
+        [ProducesResponseType(typeof(IdentityQueryDTO), 200)]
         public async Task<IActionResult> Post([FromBody]IdentityCreateCommand command)
         {
             var id = await mediator.Send(command);
             return await Get(id);
+        }
+
+        [HttpDelete("{id}")]
+        [ProducesResponseType(202)]
+        public async Task<IActionResult> Delete(string id)
+        {
+            await mediator.Send(new IdentityDeleteCommand(id));
+            return NoContent();
         }
     }
 }
