@@ -5,18 +5,18 @@ namespace Base.API
 {
     internal class ProfileContext : IProfileContext
     {
-        public long? IdentityId { get; }
+        public string IdentityId { get; }
         public string ClientId { get; }
 
-        public long? TenantId { get; }
+        public string TenantId { get; }
 
-        public long? UserId { get; }
+        public string UserId { get; }
 
         public string UserName { get; }
 
         public IDictionary<string, object> Properties { get; }
 
-        public ProfileContext(long? identityId, long? userId, string userName, long? tenantId, string clientId)
+        public ProfileContext(string identityId, string userId, string userName, string tenantId, string clientId)
         {
             IdentityId = identityId;
             UserId = userId;

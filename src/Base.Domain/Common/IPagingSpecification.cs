@@ -7,7 +7,5 @@
         int PageSize { get; }
         string OrderBy { get; }
         bool Desc { get; }
-        string Ext1 { get; }
-        string Ext2 { get; }
     }
 }

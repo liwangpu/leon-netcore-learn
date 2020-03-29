@@ -3,15 +3,17 @@ using System;
 using IDS.Infrastructure;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 
 namespace IDS.API.Migrations
 {
     [DbContext(typeof(IDSAppContext))]
-    partial class IDSAppContextModelSnapshot : ModelSnapshot
+    [Migration("20200328130952_init")]
+    partial class init
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -53,19 +55,7 @@ namespace IDS.API.Migrations
                     b.Property<string>("Id")
                         .HasColumnType("text");
 
-                    b.Property<long>("CreatedTime")
-                        .HasColumnType("bigint");
-
-                    b.Property<string>("Creator")
-                        .HasColumnType("text");
-
                     b.Property<string>("Email")
-                        .HasColumnType("text");
-
-                    b.Property<long>("ModifiedTime")
-                        .HasColumnType("bigint");
-
-                    b.Property<string>("Modifier")
                         .HasColumnType("text");
 
                     b.Property<string>("Name")

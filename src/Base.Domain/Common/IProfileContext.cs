@@ -8,10 +8,10 @@ namespace Base.Domain.Common
     {
         string ClientId { get; }
 
-        long? TenantId { get; }
+        string TenantId { get; }
 
-        long? UserId { get; }
-        long? IdentityId { get; }
+        string UserId { get; }
+        string IdentityId { get; }
 
         string UserName { get; }
 

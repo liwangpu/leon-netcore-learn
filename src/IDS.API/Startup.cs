@@ -1,3 +1,4 @@
+using AutoMapper;
 using Base.API;
 using IdentityServer4.Services;
 using IdentityServer4.Stores;
@@ -10,6 +11,7 @@ using IDS.Infrastructure.Repositories;
 using MediatR;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
+using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
@@ -59,6 +61,8 @@ namespace IDS.API
             services.AddScoped<IResourceOwnerPasswordValidator, ResourceOwnerPasswordValidator>();
             services.AddScoped<IProfileService, ProfileService>();
             services.AddPrifileContext();
+            services.AddAutoMapper(typeof(Startup));
+            services.AddLocalization(o => o.ResourcesPath = "Resources");
 
             var builder = services.AddIdentityServer(options =>
             {
@@ -73,6 +77,14 @@ namespace IDS.API
 
             builder.AddDeveloperSigningCredential();
 
+            services.AddControllers(options =>
+            {
+                options.Filters.Add(typeof(HttpGlobalExceptionFilter));
+            })
+                .AddNewtonsoftJson(options =>
+                {
+                    options.SerializerSettings.ReferenceLoopHandling = Newtonsoft.Json.ReferenceLoopHandling.Ignore;
+                }).SetCompatibilityVersion(CompatibilityVersion.Version_3_0);
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
@@ -85,7 +97,7 @@ namespace IDS.API
 
             app.UseRouting();
             app.UseIdentityServer();
-
+            app.UseLocalization();
             app.UseEndpoints(endpoints =>
             {
                 endpoints.MapControllers();

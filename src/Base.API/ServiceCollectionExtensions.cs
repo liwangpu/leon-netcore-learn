@@ -18,17 +18,11 @@ namespace Base.API
                 var tenantIdStr = accessor?.HttpContext?.Request?.Headers["TenantId"];
                 var identityIdStr = accessor?.HttpContext?.Request?.Headers["IdentityId"];
                 var uuidStr = accessor?.HttpContext?.Request?.Headers["UUID"];
-                long userId = 0;
-                long tenantId = 0;
-                long identityId = 0;
-                long.TryParse(userIdStr, out userId);
-                long.TryParse(tenantIdStr, out tenantId);
-                long.TryParse(identityIdStr, out identityId);
                 if (!string.IsNullOrWhiteSpace(userNameStr))
                 {
                     userNameStr = HttpUtility.UrlDecode(userNameStr);
                 }
-                var context = new ProfileContext(identityId, userId, userNameStr, tenantId, "");
+                var context = new ProfileContext(identityIdStr, userIdStr, userNameStr, tenantIdStr, "");
                 context.Properties.Add("UUID", uuidStr);
                 return context;
             });
