@@ -21,7 +21,7 @@ namespace IDS.API.Infrastructure.Database
                 {
                     try
                     {
-                        //appContext.Database.Migrate();
+                        appContext.Database.Migrate();
                         //var identityRepository = scope.ServiceProvider.GetRequiredService<IIdentityRepository>();
                         //var options = scope.ServiceProvider.GetRequiredService<IOptions<AppConfig>>();
                         //var appConfig = options.Value;
