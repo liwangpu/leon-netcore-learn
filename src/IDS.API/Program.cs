@@ -1,13 +1,9 @@
-using System;
-using System.Collections.Generic;
-using System.IO;
-using System.Linq;
-using System.Threading.Tasks;
+using IDS.API.Infrastructure.Database;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.Hosting;
-using Microsoft.Extensions.Logging;
 using NLog.Web;
+using System.IO;
 
 namespace IDS.API
 {
@@ -15,7 +11,7 @@ namespace IDS.API
     {
         public static void Main(string[] args)
         {
-            CreateHostBuilder(args).Build().Run();
+            CreateHostBuilder(args).Build().MigrateDatabase().Run();
         }
 
         public static IHostBuilder CreateHostBuilder(string[] args) =>

@@ -34,5 +34,10 @@ namespace IDS.Domain.AggregateModels.UserAggregate
             ModifiedTime = CreatedTime;
         }
         #endregion
+
+        public void InitializeId(string id)
+        {
+            Id = id;
+        }
     }
 }

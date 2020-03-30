@@ -3,6 +3,7 @@ using Base.API;
 using IdentityServer4.Services;
 using IdentityServer4.Stores;
 using IdentityServer4.Validation;
+using IDS.API.Infrastructure.Database;
 using IDS.API.Infrastructure.IdentityServer;
 using IDS.Domain.AggregateModels.IdentityServerAggregate;
 using IDS.Domain.AggregateModels.UserAggregate;
@@ -54,7 +55,8 @@ namespace IDS.API
                     sqlContextOptionsBuilder.MigrationsAssembly(typeof(Startup).GetTypeInfo().Assembly.GetName().Name);
                 });
             });
-
+            //services.AddSingleton<IHostedService, DBMigrationService>();
+            services.Configure<AppConfig>(Configuration);
             services.AddScoped<IPersistedGrantStore, PersistedGrantStore>();
             services.AddScoped<IIdentityRepository, IdentityRepository>();
             services.AddScoped<IIdentityGrantRepository, IdentityGrantRepository>();

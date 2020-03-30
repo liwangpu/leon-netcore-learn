@@ -1,6 +1,8 @@
-﻿using IDS.Domain.AggregateModels.UserAggregate;
+﻿using Base.Domain.Common;
+using IDS.Domain.AggregateModels.UserAggregate;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
+using System.Collections.Generic;
 
 namespace IDS.Infrastructure.EntityConfigurations
 {
@@ -19,6 +21,11 @@ namespace IDS.Infrastructure.EntityConfigurations
             builder.Property(x => x.Modifier);
             builder.Property(x => x.CreatedTime);
             builder.Property(x => x.ModifiedTime);
+
+            var identities = new List<Identity>();
+            var admin = new Identity("admin", "123456", "Admin", "bamboo@bamboo.com", "157", "admin");
+            identities.Add(admin);
+            builder.HasData(identities);
         }
     }
 }

@@ -10,8 +10,8 @@ using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 namespace IDS.API.Migrations
 {
     [DbContext(typeof(IDSAppContext))]
-    [Migration("20200329045744_identity")]
-    partial class identity
+    [Migration("20200330033344_init")]
+    partial class init
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
@@ -85,6 +85,21 @@ namespace IDS.API.Migrations
                     b.HasKey("Id");
 
                     b.ToTable("Identity");
+
+                    b.HasData(
+                        new
+                        {
+                            Id = "M8fqzEmNwrzyEFk",
+                            CreatedTime = 1585539223000L,
+                            Creator = "admin",
+                            Email = "bamboo@bamboo.com",
+                            ModifiedTime = 1585539223000L,
+                            Modifier = "admin",
+                            Name = "Admin",
+                            Password = "e10adc3949ba59abbe56e057f20f883e",
+                            Phone = "157",
+                            Username = "admin"
+                        });
                 });
 #pragma warning restore 612, 618
         }
