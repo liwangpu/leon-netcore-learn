@@ -3,7 +3,6 @@ using Base.API;
 using IdentityServer4.Services;
 using IdentityServer4.Stores;
 using IdentityServer4.Validation;
-using IDS.API.Infrastructure.Database;
 using IDS.API.Infrastructure.IdentityServer;
 using IDS.Domain.AggregateModels.IdentityServerAggregate;
 using IDS.Domain.AggregateModels.UserAggregate;
@@ -17,6 +16,7 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
+using Microsoft.OpenApi.Models;
 using System.Reflection;
 
 namespace IDS.API
@@ -35,11 +35,12 @@ namespace IDS.API
         public string IdentityServerIssuerUri => Configuration["IdentityServer:IssuerUri"];
         #endregion
 
+        #region ctor
         public Startup(IConfiguration configuration)
         {
             Configuration = configuration;
-        }
-
+        } 
+        #endregion
 
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
@@ -66,10 +67,18 @@ namespace IDS.API
             services.AddAutoMapper(typeof(Startup));
             services.AddLocalization(o => o.ResourcesPath = "Resources");
 
+            #region Swagger
+            services.AddSwaggerGen(c =>
+               {
+                   c.SwaggerDoc("ids", new OpenApiInfo { Title = "IDS API", Version = "v1" });
+               });
+            #endregion
+
+            #region Identity Server ÅäÖÃ
             var builder = services.AddIdentityServer(options =>
-            {
-                options.IssuerUri = IdentityServerIssuerUri;
-            })
+    {
+        options.IssuerUri = IdentityServerIssuerUri;
+    })
                  .AddInMemoryIdentityResources(Resources.GetIdentityResources())
                  .AddInMemoryApiResources(Resources.GetApiResources())
                  .AddInMemoryClients(Clients.GetClients())
@@ -78,6 +87,7 @@ namespace IDS.API
                  .AddProfileService<ProfileService>();
 
             builder.AddDeveloperSigningCredential();
+            #endregion
 
             services.AddControllers(options =>
             {
@@ -92,14 +102,19 @@ namespace IDS.API
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
         public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
         {
-            if (env.IsDevelopment())
-            {
-                app.UseDeveloperExceptionPage();
-            }
+            //if (env.IsDevelopment())
+            //{
+            //    app.UseDeveloperExceptionPage();
+            //}
 
             app.UseRouting();
             app.UseIdentityServer();
             app.UseLocalization();
+            app.UseSwagger(c =>
+            {
+                c.RouteTemplate = "{documentName}/swagger.json";
+            });
+
             app.UseEndpoints(endpoints =>
             {
                 endpoints.MapControllers();

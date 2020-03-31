@@ -1,12 +1,7 @@
-using System;
-using System.Collections.Generic;
-using System.IO;
-using System.Linq;
-using System.Threading.Tasks;
+using Gateway.API.JsonMerge;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.Hosting;
-using Microsoft.Extensions.Logging;
 using NLog.Web;
 
 namespace Gateway.API
@@ -20,17 +15,21 @@ namespace Gateway.API
 
         public static IHostBuilder CreateHostBuilder(string[] args) =>
             Host.CreateDefaultBuilder(args)
-            .UseContentRoot(Directory.GetCurrentDirectory())
-            .ConfigureAppConfiguration((hostingContext, config) =>
+            .ConfigureAppConfiguration((context, build) =>
             {
-                var env = hostingContext.HostingEnvironment.EnvironmentName;
-                config
-                     .SetBasePath(hostingContext.HostingEnvironment.ContentRootPath)
-                     .AddJsonFile("appsettings.json", true, true)
-                     .AddJsonFile($"appsettings.{env}.json", true, true)
-                      .AddJsonFile("ocelot.json")
-                     .AddJsonFile($"ocelot.{env}.json")
-                     .AddEnvironmentVariables();
+                build.SetBasePath(context.HostingEnvironment.ContentRootPath);
+                var env = context.HostingEnvironment.EnvironmentName;
+
+                build.AddJsonMergeFiles(options =>
+                {
+                    options.Files.Add("appsettings.json");
+                    options.Files.Add($"appsettings.{env}.json");
+                    var folder = $"OcelotConfiguration/{env}";
+                    options.Files.Add($"{folder}/base.json");
+                    options.Files.Add($"{folder}/ids.json");
+                    options.Files.Add($"{folder}/oss.json");
+                })
+                .AddEnvironmentVariables();
             })
             .ConfigureWebHostDefaults(webBuilder =>
             {

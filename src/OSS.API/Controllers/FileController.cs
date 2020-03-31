@@ -13,6 +13,8 @@ namespace OSS.API.Controllers
         {
             this.profileContext = profileContext;
         }
+
+        [HttpGet]
         public IActionResult Get()
         {
             return Ok("all files");
