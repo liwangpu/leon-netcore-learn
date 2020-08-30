@@ -17,7 +17,7 @@ namespace IDS.API.Migrations
             modelBuilder
                 .HasDefaultSchema("idsapp")
                 .HasAnnotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn)
-                .HasAnnotation("ProductVersion", "3.1.2")
+                .HasAnnotation("ProductVersion", "3.1.7")
                 .HasAnnotation("Relational:MaxIdentifierLength", 63);
 
             modelBuilder.Entity("IDS.Domain.AggregateModels.IdentityServerAggregate.IdentityGrant", b =>
@@ -87,11 +87,11 @@ namespace IDS.API.Migrations
                     b.HasData(
                         new
                         {
-                            Id = "M8fqzEmNwrzyEFk",
-                            CreatedTime = 1585539223000L,
+                            Id = "wpfGOmBKj9D9XHq",
+                            CreatedTime = 1598797034000L,
                             Creator = "admin",
                             Email = "bamboo@bamboo.com",
-                            ModifiedTime = 1585539223000L,
+                            ModifiedTime = 1598797034000L,
                             Modifier = "admin",
                             Name = "Admin",
                             Password = "e10adc3949ba59abbe56e057f20f883e",

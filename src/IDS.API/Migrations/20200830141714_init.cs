@@ -53,7 +53,7 @@ namespace IDS.API.Migrations
                 schema: "idsapp",
                 table: "Identity",
                 columns: new[] { "Id", "CreatedTime", "Creator", "Email", "ModifiedTime", "Modifier", "Name", "Password", "Phone", "Username" },
-                values: new object[] { "M8fqzEmNwrzyEFk", 1585539223000L, "admin", "bamboo@bamboo.com", 1585539223000L, "admin", "Admin", "e10adc3949ba59abbe56e057f20f883e", "157", "admin" });
+                values: new object[] { "wpfGOmBKj9D9XHq", 1598797034000L, "admin", "bamboo@bamboo.com", 1598797034000L, "admin", "Admin", "e10adc3949ba59abbe56e057f20f883e", "157", "admin" });
         }
 
         protected override void Down(MigrationBuilder migrationBuilder)
